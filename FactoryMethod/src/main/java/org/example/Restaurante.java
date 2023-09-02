@@ -2,16 +2,15 @@ package org.example;
 
 public abstract class Restaurante {
 
-    public Salchipapa ordenarSalchipapa() {
+    public void ordenarSalchipapa() {
         Salchipapa salchipapa = crearSalchipapa();
-        // Logica de negocio concreta. Ejemplo : delivery, cliente que pide etc.
         var salchipapaDto = salchipapa.preparar();
 
+        // Logica de negocio concreta. Ejemplo : delivery, cliente que pide etc.
         guardarRegistroCreacion(salchipapaDto);
         encontrarDomiciliario(salchipapaDto);
         enviar(salchipapaDto);
 
-        return salchipapa;
     }
 
     private void guardarRegistroCreacion(SalchipapaDto salchipapaDto) {

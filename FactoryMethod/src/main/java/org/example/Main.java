@@ -4,13 +4,13 @@ public class Main {
     public static void main(String[] args) {
 
         Restaurante restauranteMexicano = new ChefMexicano();
-        Salchipapa ordenMexicana = restauranteMexicano.ordenarSalchipapa();
+        restauranteMexicano.ordenarSalchipapa();
 
         Restaurante restauranteColombiano = new ChefColombiano();
-        Salchipapa  ordenColombiana = restauranteColombiano.ordenarSalchipapa();
+        restauranteColombiano.ordenarSalchipapa();
 
         Restaurante restauranteArgentina = new ChefColombiano();
-        Salchipapa  ordenargentina = restauranteArgentina.ordenarSalchipapa();
+        restauranteArgentina.ordenarSalchipapa();
 
     }
 }
