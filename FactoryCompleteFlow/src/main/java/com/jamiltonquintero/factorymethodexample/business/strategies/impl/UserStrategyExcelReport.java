@@ -14,13 +14,13 @@ import java.util.List;
 public class UserStrategyExcelReport implements ExcelReportContentStrategy<User> {
 
     @Override
-    public boolean appliesTo(ReportTypeEnum reportTypeEnum) {
-        return reportTypeEnum == ReportTypeEnum.USER;
+    public Class<User> getClase() {
+        return User.class;
     }
 
     @Override
-    public Class<User> getType() {
-        return User.class;
+    public ReportTypeEnum getType() {
+        return ReportTypeEnum.USER;
     }
 
     @Override
@@ -31,20 +31,16 @@ public class UserStrategyExcelReport implements ExcelReportContentStrategy<User>
         Row titleRow = sheet.createRow(rowCount++);
         Cell titleCell = titleRow.createCell(0);
         titleCell.setCellValue("REPORTE USUARIOS");
-        // Puedes agregar estilos adicionales si lo deseas
 
-        rowCount++;  // Espacio en blanco
+        rowCount++;
 
-        // Encabezados de la tabla
         Row headerRow = sheet.createRow(rowCount++);
         var fields = users.get(0).getClass().getDeclaredFields();
         for (int i = 0; i < fields.length; i++) {
             Cell headerCell = headerRow.createCell(i);
             headerCell.setCellValue(fields[i].getName());
-            // Puedes agregar estilos adicionales si lo deseas
         }
 
-        // Contenido de la tabla
         for (User user : users) {
             Row userRow = sheet.createRow(rowCount++);
             for (int i = 0; i < fields.length; i++) {
@@ -58,14 +54,12 @@ public class UserStrategyExcelReport implements ExcelReportContentStrategy<User>
             }
         }
 
-        // Total de edades
         long totalAge = users.stream().map(User::getName).count();
         Row totalRow = sheet.createRow(rowCount++);
         Cell totalTextCell = totalRow.createCell(0);
-        totalTextCell.setCellValue("Total de edades:");
+        totalTextCell.setCellValue("Total de usuarios:");
         Cell totalValueCell = totalRow.createCell(1);
         totalValueCell.setCellValue(totalAge);
-        // Puedes agregar estilos adicionales si lo deseas
     }
 
 }

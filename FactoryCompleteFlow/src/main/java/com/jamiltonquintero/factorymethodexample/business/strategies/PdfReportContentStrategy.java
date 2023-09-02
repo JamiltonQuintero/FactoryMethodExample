@@ -8,8 +8,9 @@ import com.jamiltonquintero.factorymethodexample.domain.enums.ReportTypeEnum;
 import java.util.List;
 
 public interface PdfReportContentStrategy<T> {
-    boolean appliesTo(ReportTypeEnum reportTypeEnum);
-    Class<T> getType();
+
+    Class<T> getClase();
+    ReportTypeEnum getType();
     void portada(Document document) throws DocumentException;
 
     PdfPTable tabla(List<T> objs);

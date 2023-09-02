@@ -12,6 +12,4 @@ public class ReportData {
     private MediaType mediaType;
     private String filename;
 
-
-
 }

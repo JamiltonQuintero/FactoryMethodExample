@@ -1,14 +1,18 @@
 package com.jamiltonquintero.factorymethodexample.business.servcie.impl;
 
 import com.itextpdf.text.DocumentException;
+import com.jamiltonquintero.factorymethodexample.business.factory.ExcelFactory;
+import com.jamiltonquintero.factorymethodexample.business.factory.PDFFactory;
+import com.jamiltonquintero.factorymethodexample.business.factory.Reporte;
 import com.jamiltonquintero.factorymethodexample.business.servcie.DataProvider;
 import com.jamiltonquintero.factorymethodexample.business.servcie.ReporteService;
 import com.jamiltonquintero.factorymethodexample.business.factory.ReportGenerator;
+import com.jamiltonquintero.factorymethodexample.business.strategies.ExcelReportContentStrategy;
+import com.jamiltonquintero.factorymethodexample.business.strategies.PdfReportContentStrategy;
 import com.jamiltonquintero.factorymethodexample.domain.enums.ReportTypeEnum;
 import com.jamiltonquintero.factorymethodexample.domain.enums.ReportFormatEnum;
 import com.jamiltonquintero.factorymethodexample.domain.dto.ReportData;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -22,9 +26,13 @@ public class ReporteServiceImpl implements ReporteService {
 
     private Map<ReportTypeEnum, DataProvider<?>> dataProviders;
     private Map<ReportFormatEnum, ReportGenerator> reportGenerators;
+    private Set<PdfReportContentStrategy> typesPdf;
+    private Set<ExcelReportContentStrategy> typesExcel;
 
     @Autowired
-    public ReporteServiceImpl(Set<DataProvider<?>> types, Set<ReportGenerator> formats) {
+    public ReporteServiceImpl(Set<DataProvider<?>> types, Set<ReportGenerator> formats, Set<PdfReportContentStrategy> typesPdf, Set<ExcelReportContentStrategy> typesExcel) {
+        this.typesPdf = typesPdf;
+        this.typesExcel = typesExcel;
         this.dataProviders = new HashMap<>();
         this.reportGenerators = new HashMap<>();
         types.forEach(type -> this.dataProviders.put(type.getType(), type));
@@ -35,29 +43,21 @@ public class ReporteServiceImpl implements ReporteService {
     @Override
     public ReportData execute(ReportFormatEnum reportFormatEnum, ReportTypeEnum reportTypeEnum) throws DocumentException, IOException {
 
-        MediaType mediaType = null;
-        String filename;
-
-        switch(reportFormatEnum) {
-            case PDF:
-                mediaType = MediaType.APPLICATION_PDF;
-                filename = "report.pdf";
-                break;
-
-            case EXCEL:
-                mediaType = MediaType.parseMediaType("application/vnd.ms-excel");
-                filename = "report.xls";
-                break;
-
-            default:
-                throw new IllegalArgumentException("Tipo de reporte no soportado");
-        }
         List<?> data = dataProviders.get(reportTypeEnum).getData();
 
-        ReportGenerator report = reportGenerators.get(reportFormatEnum);
-        byte[] generatedReport = report.generateReport(reportTypeEnum, data);
+        Reporte reporte;
+        switch (reportFormatEnum){
+            case PDF:
+                reporte = new PDFFactory(typesPdf);
+                break;
+            case EXCEL:
+                reporte = new ExcelFactory(typesExcel);
+                break;
+            default:
+                throw new IllegalArgumentException("");
+        }
 
-        return new ReportData(generatedReport, mediaType, filename);
+        return reporte.generarReporte(reportTypeEnum, data);
 
     }
 }

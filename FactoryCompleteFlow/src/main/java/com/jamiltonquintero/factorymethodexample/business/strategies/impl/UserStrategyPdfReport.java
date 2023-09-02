@@ -10,7 +10,9 @@ import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.jamiltonquintero.factorymethodexample.domain.entity.Client;
 import com.jamiltonquintero.factorymethodexample.domain.entity.User;
+import com.jamiltonquintero.factorymethodexample.domain.enums.ReportFormatEnum;
 import com.jamiltonquintero.factorymethodexample.domain.enums.ReportTypeEnum;
 import com.jamiltonquintero.factorymethodexample.business.strategies.PdfReportContentStrategy;
 import org.springframework.stereotype.Service;
@@ -22,13 +24,12 @@ import java.util.List;
 public class UserStrategyPdfReport implements PdfReportContentStrategy<User> {
 
     @Override
-    public boolean appliesTo(ReportTypeEnum reportTypeEnum) {
-        return reportTypeEnum == ReportTypeEnum.USER;
-    }
-
-    @Override
-    public Class<User> getType() {
+    public Class<User> getClase() {
         return User.class;
+    }
+    @Override
+    public ReportTypeEnum getType() {
+        return ReportTypeEnum.USER;
     }
 
     @Override

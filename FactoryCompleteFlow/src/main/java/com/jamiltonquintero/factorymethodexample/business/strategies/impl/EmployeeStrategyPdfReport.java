@@ -23,15 +23,14 @@ import java.util.List;
 public class EmployeeStrategyPdfReport implements PdfReportContentStrategy<Employee> {
 
     @Override
-    public boolean appliesTo(ReportTypeEnum reportTypeEnum) {
-        return reportTypeEnum == ReportTypeEnum.EMPLOYEE;
-    }
-
-    @Override
-    public Class<Employee> getType() {
+    public Class<Employee> getClase() {
         return Employee.class;
     }
 
+    @Override
+    public ReportTypeEnum getType() {
+        return ReportTypeEnum.EMPLOYEE;
+    }
     @Override
     public void portada(Document document) throws DocumentException {
         Font titleFont = FontFactory.getFont(FontFactory.COURIER_BOLD, 30, BaseColor.GREEN);

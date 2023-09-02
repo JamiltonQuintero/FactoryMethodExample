@@ -12,7 +12,6 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.jamiltonquintero.factorymethodexample.business.strategies.PdfReportContentStrategy;
 import com.jamiltonquintero.factorymethodexample.domain.entity.Client;
-import com.jamiltonquintero.factorymethodexample.persistance.ClientRepository;
 import com.jamiltonquintero.factorymethodexample.domain.enums.ReportTypeEnum;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +22,13 @@ import java.util.List;
 public class ClientStrategyPdfReport implements PdfReportContentStrategy<Client> {
 
     @Override
-    public boolean appliesTo(ReportTypeEnum reportTypeEnum) {
-        return reportTypeEnum == ReportTypeEnum.CLIENT;
+    public Class<Client> getClase() {
+        return Client.class;
     }
 
     @Override
-    public Class<Client> getType() {
-        return Client.class;
+    public ReportTypeEnum getType() {
+        return ReportTypeEnum.CLIENT;
     }
 
     @Override
